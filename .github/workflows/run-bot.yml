@@ -1,8 +1,8 @@
 name: Attendance Telegram Bot
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'  # runs every 15 minutes   # runs every 15 minutes
+  repository_dispatch:
+    types: [run-attendance]
   workflow_dispatch:
 
 jobs:
