@@ -1,33 +1,33 @@
-# trigger scheduler
-name: IMS Attendance Bot
+name: Daily Attendance Bot
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
-  workflow_dispatch:
+  repository_dispatch:
+    types: [run-attendance]   # cron-job.org triggers this
+  workflow_dispatch:           # allows manual trigger from GitHub too
 
 jobs:
-  run-bot:
+  send-attendance:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          playwright install chromium
+        run: pip install -r requirements.txt
 
-      - name: Run script
+      - name: Install Playwright browsers
+        run: python -m playwright install chromium --with-deps
+
+      - name: Run bot
         env:
-          IMS_USERNAME: ${{ secrets.IMS_USERNAME }}
-          IMS_PASSWORD: ${{ secrets.IMS_PASSWORD }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IMS_USERNAME: ${{ secrets.IMS_USERNAME }}
+          IMS_PASSWORD: ${{ secrets.IMS_PASSWORD }}
         run: python main.py --run-now
