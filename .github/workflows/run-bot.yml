@@ -2,7 +2,7 @@ name: Attendance Telegram Bot
 
 on:
   schedule:
-    - cron: '*/15 * * * *'   # runs every 15 minutes
+    - cron: '*/5 * * * *'  # runs every 15 minutes   # runs every 15 minutes
   workflow_dispatch:
 
 jobs:
