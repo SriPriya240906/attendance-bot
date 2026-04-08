@@ -2,7 +2,7 @@ name: IMS Attendance Bot
 
 on:
   schedule:
-    - cron: '0 10 * * *'   # 3:30 PM IST
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
